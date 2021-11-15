@@ -32,8 +32,6 @@ set WORKSPACE_PATH_BUILD=%WORKSPACE_PATH%\temp
 
 if exist %WORKSPACE_PATH_BUILD%\build.done.flag goto :eof
 
-copy /Y /B build\source\build.info source\build.info
-
 pushd "source"
 
 SET CMD_CONFIG=perl Configure threads
@@ -41,11 +39,14 @@ SET CMD_CONFIG=%CMD_CONFIG% --prefix="%WORKSPACE_PATH_BUILD%\openssl"
 SET CMD_CONFIG=%CMD_CONFIG% --openssldir="%WORKSPACE_PATH_BUILD%\ssl"
 SET CMD_CONFIG=%CMD_CONFIG% --with-zlib-lib=libz.lib zlib
 
-if "%XYO_PLATFORM%" == "win32-msvc-2019" SET CMD_CONFIG=%CMD_CONFIG% VC-WIN32
-if "%XYO_PLATFORM%" == "win32-msvc-2017" SET CMD_CONFIG=%CMD_CONFIG% VC-WIN32
+if "%XYO_PLATFORM%" == "win64-msvc-2022" SET CMD_CONFIG=%CMD_CONFIG% VC-WIN64A
+if "%XYO_PLATFORM%" == "win32-msvc-2022" SET CMD_CONFIG=%CMD_CONFIG% VC-WIN32
 
 if "%XYO_PLATFORM%" == "win64-msvc-2019" SET CMD_CONFIG=%CMD_CONFIG% VC-WIN64A
+if "%XYO_PLATFORM%" == "win32-msvc-2019" SET CMD_CONFIG=%CMD_CONFIG% VC-WIN32
+
 if "%XYO_PLATFORM%" == "win64-msvc-2017" SET CMD_CONFIG=%CMD_CONFIG% VC-WIN64A
+if "%XYO_PLATFORM%" == "win32-msvc-2017" SET CMD_CONFIG=%CMD_CONFIG% VC-WIN32
 
 %CMD_CONFIG%
 if errorlevel 1 goto makeError
@@ -62,11 +63,14 @@ SET CMD_CONFIG=%CMD_CONFIG% --prefix="%WORKSPACE_PATH_BUILD%\openssl.static"
 SET CMD_CONFIG=%CMD_CONFIG% --openssldir="%WORKSPACE_PATH_BUILD%\ssl.static"
 SET CMD_CONFIG=%CMD_CONFIG% --with-zlib-lib=libz.lib zlib
 
-if "%XYO_PLATFORM%" == "win32-msvc-2019" SET CMD_CONFIG=%CMD_CONFIG% VC-WIN32
-if "%XYO_PLATFORM%" == "win32-msvc-2017" SET CMD_CONFIG=%CMD_CONFIG% VC-WIN32
+if "%XYO_PLATFORM%" == "win64-msvc-2022" SET CMD_CONFIG=%CMD_CONFIG% VC-WIN64A
+if "%XYO_PLATFORM%" == "win32-msvc-2022" SET CMD_CONFIG=%CMD_CONFIG% VC-WIN32
 
 if "%XYO_PLATFORM%" == "win64-msvc-2019" SET CMD_CONFIG=%CMD_CONFIG% VC-WIN64A
+if "%XYO_PLATFORM%" == "win32-msvc-2019" SET CMD_CONFIG=%CMD_CONFIG% VC-WIN32
+
 if "%XYO_PLATFORM%" == "win64-msvc-2017" SET CMD_CONFIG=%CMD_CONFIG% VC-WIN64A
+if "%XYO_PLATFORM%" == "win32-msvc-2017" SET CMD_CONFIG=%CMD_CONFIG% VC-WIN32
 
 %CMD_CONFIG%
 if errorlevel 1 goto makeError
