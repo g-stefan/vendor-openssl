@@ -3,7 +3,7 @@ rem Public domain
 rem http://unlicense.org/
 rem Created by Grigore Stefan <g_stefan@yahoo.com>
 
-echo -^> vendor vendor-openssl
+echo - %BUILD_PROJECT% ^> vendor
 
 goto getSizeDefined
 :getSize

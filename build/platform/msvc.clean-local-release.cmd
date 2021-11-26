@@ -3,4 +3,6 @@ rem Public domain
 rem http://unlicense.org/
 rem Created by Grigore Stefan <g_stefan@yahoo.com>
 
-echo -^> version-dependency vendor-openssl
+echo - %BUILD_PROJECT% ^> clean-local-release
+
+if exist release\ rmdir /Q /S release
