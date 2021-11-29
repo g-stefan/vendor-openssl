@@ -22,12 +22,14 @@ if not "%ACTION%" == "make" goto :eof
 
 call :cmdX xyo-cc --mode=%ACTION% --source-has-archive openssl
 
+if not exist output\ mkdir output
 if not exist temp\ mkdir temp
 
 set INCLUDE=%XYO_PATH_REPOSITORY%\include;%INCLUDE%
 set LIB=%XYO_PATH_REPOSITORY%\lib;%LIB%
 set PATH=%XYO_PATH_REPOSITORY%\opt\perl\bin;%PATH%
 set WORKSPACE_PATH=%CD%
+set WORKSPACE_PATH_OUTPUT=%WORKSPACE_PATH%\output
 set WORKSPACE_PATH_BUILD=%WORKSPACE_PATH%\temp
 
 if exist %WORKSPACE_PATH_BUILD%\build.done.flag goto :eof
@@ -35,8 +37,8 @@ if exist %WORKSPACE_PATH_BUILD%\build.done.flag goto :eof
 pushd "source"
 
 SET CMD_CONFIG=perl Configure threads
-SET CMD_CONFIG=%CMD_CONFIG% --prefix="%WORKSPACE_PATH_BUILD%\openssl"
-SET CMD_CONFIG=%CMD_CONFIG% --openssldir="%WORKSPACE_PATH_BUILD%\ssl"
+SET CMD_CONFIG=%CMD_CONFIG% --prefix="%WORKSPACE_PATH_OUTPUT%"
+SET CMD_CONFIG=%CMD_CONFIG% --openssldir="%WORKSPACE_PATH_OUTPUT%\ssl"
 SET CMD_CONFIG=%CMD_CONFIG% --with-zlib-lib=libz.lib zlib
 
 if "%XYO_PLATFORM%" == "win64-msvc-2022" SET CMD_CONFIG=%CMD_CONFIG% VC-WIN64A
@@ -59,8 +61,8 @@ nmake -f makefile clean
 if errorlevel 1 goto makeError
 
 SET CMD_CONFIG=perl Configure threads no-shared
-SET CMD_CONFIG=%CMD_CONFIG% --prefix="%WORKSPACE_PATH_BUILD%\openssl.static"
-SET CMD_CONFIG=%CMD_CONFIG% --openssldir="%WORKSPACE_PATH_BUILD%\ssl.static"
+SET CMD_CONFIG=%CMD_CONFIG% --prefix="%WORKSPACE_PATH_OUTPUT%\static"
+SET CMD_CONFIG=%CMD_CONFIG% --openssldir="%WORKSPACE_PATH_OUTPUT%\static\ssl"
 SET CMD_CONFIG=%CMD_CONFIG% --with-zlib-lib=libz.lib zlib
 
 if "%XYO_PLATFORM%" == "win64-msvc-2022" SET CMD_CONFIG=%CMD_CONFIG% VC-WIN64A
