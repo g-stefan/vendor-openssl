@@ -23,13 +23,13 @@ del /F /Q archive\%PROJECT%-%VERSION%.7z goto:eof
 rem Source
 pushd archive
 set VENDOR=%PROJECT%-%VERSION%
-set WEB_LINK=https://github.com/openssl/openssl/archive/OpenSSL_1_1_1l.tar.gz
+set WEB_LINK=https://github.com/openssl/openssl/archive/OpenSSL_1_1_1n.tar.gz
 if not exist %VENDOR%.tar.gz curl --insecure --location %WEB_LINK% --output %VENDOR%.tar.gz
 7z x %VENDOR%.tar.gz -so | 7z x -aoa -si -ttar -o.
 del /F /Q %VENDOR%.tar.gz
-move openssl-OpenSSL_1_1_1l openssl-1.1.1l
+move openssl-OpenSSL_1_1_1n openssl-1.1.1n
 del /F /Q pax_global_header 
 if exist %VENDOR%.7z del /F /Q %VENDOR%.7z
-7zr a -mx9 -mmt4 -r- -sse -w. -y -t7z %VENDOR%.7z %VENDOR%
+7z a -mx9 -mmt4 -r- -sse -w. -y -t7z %VENDOR%.7z %VENDOR%
 rmdir /Q /S %VENDOR%
 popd
