@@ -3,8 +3,7 @@ Build scripts for compiling [OpenSSL](https://www.openssl.org/) with MSVC compil
 
 ## License
 
-Copyright (c) Grigore Stefan
-
+Copyright (c) 2022 Grigore Stefan
 Licensed under the [MIT](LICENSE) license.
 
 **This is a compilation of different works.**
