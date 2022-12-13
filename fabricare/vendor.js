@@ -3,6 +3,8 @@
 // SPDX-FileCopyrightText: 2022 Grigore Stefan <g_stefan@yahoo.com>
 // SPDX-License-Identifier: Unlicense
 
+messageAction("vendor");
+
 Project.vendor = Project.name + "-" + Project.version;
 
 Shell.mkdirRecursivelyIfNotExists("archive");
