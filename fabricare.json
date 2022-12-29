@@ -7,6 +7,7 @@
 		"version" : "1.1.1s",
 		"hasRelease" : true,
 		"noVersion" : true,
-		"githubRelease" : true
+		"githubRelease" : true,
+		"githubRepository" : "vendor-openssl"
 	}
 }
