@@ -36,6 +36,6 @@ runInPath("archive", function() {
 	Shell.removeFile("pax_global_header");
 	Shell.rename("openssl-OpenSSL_1_1_1s","openssl-"+Project.version);
 	exitIf(Shell.system("7z a -mx9 -mmt4 -r- -sse -w. -y -t7z " + Project.vendor + ".7z " + Project.vendor));
-	forceRemoveDirRecursively(Project.vendor);
+	Shell.removeDirRecursivelyForce(Project.vendor);
 });
 
