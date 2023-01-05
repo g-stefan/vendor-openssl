@@ -26,6 +26,8 @@ var outputPath=Shell.getcwd()+"\\output";
 
 runInPath("source",function(){
 
+	Shell.setenv("PATH", pathRepository + "\\opt\\perl\\bin;" + Shell.getenv("PATH"));
+
 	cmdConfig="perl Configure threads";
 	cmdConfig+=" --prefix=\""+outputPath+"\"";
 	cmdConfig+=" --openssldir=\""+outputPath+"\\ssl\"";
