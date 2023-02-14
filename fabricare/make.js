@@ -21,8 +21,11 @@ Shell.mkdirRecursivelyIfNotExists("output/bin");
 Shell.mkdirRecursivelyIfNotExists("output/include");
 Shell.mkdirRecursivelyIfNotExists("output/lib");
 Shell.mkdirRecursivelyIfNotExists("temp");
+Shell.mkdirRecursivelyIfNotExists("temp/bin");
+Shell.mkdirRecursivelyIfNotExists("temp/include");
+Shell.mkdirRecursivelyIfNotExists("temp/lib");
 
-var outputPath=Shell.getcwd()+"\\output";
+var outputPath=Shell.getcwd()+"\\temp";
 
 runInPath("source",function(){
 
@@ -64,5 +67,14 @@ runInPath("source",function(){
 	exitIf(Shell.system("nmake -f makefile clean"));
 
 });
+
+Shell.copyFilesToDirectory("temp/bin/*.exe", "output/bin");
+Shell.copyFilesToDirectory("temp/bin/*.dll", "output/bin");
+Shell.copyDirRecursively("temp/include", "output/include");
+Shell.copyFilesToDirectory("temp/lib/*.lib", "output/lib");
+Shell.copyFilesToDirectory("temp/lib/engines-1_1/*.dll", "output/bin");
+Shell.copyDirRecursively("temp/ssl", "output/ssl");
+Shell.copyFile("temp/static/lib/libcrypto.lib", "output/lib/libcrypto.static.lib");
+Shell.copyFile("temp/static/lib/libssl.lib", "output/lib/libssl.static.lib");
 
 Shell.filePutContents("temp/build.done.flag", "done");

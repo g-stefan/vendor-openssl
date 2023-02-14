@@ -26,7 +26,7 @@ Shell.removeFile("archive/" + Project.vendor + ".7z");
 
 // Source
 runInPath("archive", function() {
-	webLink = "https://github.com/openssl/openssl/archive/OpenSSL_1_1_1s.tar.gz";
+	webLink = "https://github.com/openssl/openssl/archive/OpenSSL_1_1_1t.tar.gz";
 	if (!Shell.fileExists(Project.vendor + ".tar.gz")) {
 		exitIf(Shell.system("curl --insecure --location " + webLink + " --output " + Project.vendor + ".tar.gz"));
 	};
@@ -34,7 +34,7 @@ runInPath("archive", function() {
 	Shell.removeFile(Project.vendor + ".tar.gz");
 	Shell.removeFile(Project.vendor + ".7z");
 	Shell.removeFile("pax_global_header");
-	Shell.rename("openssl-OpenSSL_1_1_1s","openssl-"+Project.version);
+	Shell.rename("openssl-OpenSSL_1_1_1t","openssl-"+Project.version);
 	exitIf(Shell.system("7z a -mx9 -mmt4 -r- -sse -w. -y -t7z " + Project.vendor + ".7z " + Project.vendor));
 	Shell.removeDirRecursivelyForce(Project.vendor);
 });
