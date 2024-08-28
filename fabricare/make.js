@@ -25,40 +25,30 @@ Shell.mkdirRecursivelyIfNotExists("temp/bin");
 Shell.mkdirRecursivelyIfNotExists("temp/include");
 Shell.mkdirRecursivelyIfNotExists("temp/lib");
 
-var outputPath=Shell.getcwd()+"\\temp";
+var outputPath = Shell.getcwd() + "\\temp";
 
-runInPath("source",function(){
+runInPath("source", function () {
 
 	Shell.setenv("PATH", pathRepository + "\\opt\\perl\\bin;" + Shell.getenv("PATH"));
 
-	cmdConfig="perl Configure threads";
-	cmdConfig+=" --prefix=\""+outputPath+"\"";
-	cmdConfig+=" --openssldir=\""+outputPath+"\\ssl\"";
-	cmdConfig+=" --with-zlib-lib=libz.lib zlib";
+	if (Fabricare.isDynamic()) {
+		cmdConfig = "perl Configure threads";
+		cmdConfig += " --prefix=\"" + outputPath + "\"";
+		cmdConfig += " --openssldir=\"" + outputPath + "\\ssl\"";
+		cmdConfig += " --with-zlib-lib=libz.lib zlib";
+	};
+	if (Fabricare.isStatic()) {
+		cmdConfig = "perl Configure threads no-shared";
+		cmdConfig += " --prefix=\"" + outputPath + "\"";
+		cmdConfig += " --openssldir=\"" + outputPath + "\\ssl\"";
+		cmdConfig += " --with-zlib-lib=libz.lib zlib";
+	};
 
 	if (Platform.name.indexOf("win64") >= 0) {
-		cmdConfig+=" VC-WIN64A";
-	}else{
-		cmdConfig+=" VC-WIN32";
-	};	
-
-	exitIf(Shell.system(cmdConfig));
-
-	exitIf(Shell.system("nmake -f makefile all"));
-	exitIf(Shell.system("nmake -f makefile install"));
-	exitIf(Shell.system("nmake -f makefile clean"));
-
-
-	cmdConfig="perl Configure threads no-shared";
-	cmdConfig+=" --prefix=\""+outputPath+"\\static\"";
-	cmdConfig+=" --openssldir=\""+outputPath+"\\static\\ssl\"";
-	cmdConfig+=" --with-zlib-lib=libz.lib zlib";
-
-	if (Platform.name.indexOf("win64") >= 0) {
-		cmdConfig+=" VC-WIN64A";
-	}else{
-		cmdConfig+=" VC-WIN32";
-	};	
+		cmdConfig += " VC-WIN64A";
+	} else {
+		cmdConfig += " VC-WIN32";
+	};
 
 	exitIf(Shell.system(cmdConfig));
 
@@ -69,12 +59,18 @@ runInPath("source",function(){
 });
 
 Shell.copyFilesToDirectory("temp/bin/*.exe", "output/bin");
-Shell.copyFilesToDirectory("temp/bin/*.dll", "output/bin");
+if (Fabricare.isDynamic()) {
+	Shell.copyFilesToDirectory("temp/bin/*.dll", "output/bin");
+};
 Shell.copyDirRecursively("temp/include", "output/include");
 Shell.copyFilesToDirectory("temp/lib/*.lib", "output/lib");
-Shell.copyFilesToDirectory("temp/lib/engines-1_1/*.dll", "output/bin");
+if (Fabricare.isDynamic()) {
+	Shell.copyFilesToDirectory("temp/lib/engines-1_1/*.dll", "output/bin");
+};
 Shell.copyDirRecursively("temp/ssl", "output/ssl");
-Shell.copyFile("temp/static/lib/libcrypto.lib", "output/lib/libcrypto.static.lib");
-Shell.copyFile("temp/static/lib/libssl.lib", "output/lib/libssl.static.lib");
+
+if (OS.isWindows()) {                                      
+	Shell.copyFile("source/ms/applink.c", "output/include/openssl/applink.c");
+};
 
 Shell.filePutContents("temp/build.done.flag", "done");
